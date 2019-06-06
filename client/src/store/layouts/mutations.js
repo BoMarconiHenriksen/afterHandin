@@ -8,6 +8,11 @@ export const setNewGridItem = (state, inputFieldLayout) => {
   state.gridLayout.push(inputFieldLayout)
 }
 
+// Clear the gridlayout after save.
+export const clarLayoutInStore = (state, payload) => {
+  state.gridLayout.length = 0
+}
+
 // List of templates from backend.
 export const getListOfGridItems = (state, payload) => {
   let tableData = [ ]

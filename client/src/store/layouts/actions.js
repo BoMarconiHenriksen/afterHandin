@@ -68,6 +68,11 @@ export const updateLockOnComponent = ({ commit }, payload) => {
   commit('saveLockOnComponent', payload)
 }
 
+// Clear layout in store af save.
+export const clearLayout = ({ commit }, payload) => {
+  commit('clarLayoutInStore', payload)
+}
+
 // Fetch the forms from the database
 export async function fetchFormsFromDb ({ commit }) {
   // commit('setLoading', true)
