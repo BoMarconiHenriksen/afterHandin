@@ -1,0 +1,15 @@
+# Which files and folders we don’t want to copy every time to the container
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.vscode
+*/bin
+*/obj
+**/.toolstarget
+
+**/global.json
+**/Dockerfile*
+**/.dockerignore*
+**/*.user

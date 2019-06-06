@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: formbuilder-server-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    # Provide access to
+    component: server
+  ports:
+    # How other pods inside the cluster access the pod that this service connects to (server)
+    - port: 80
+      # From ClusterIPService to .Net core program inside the cluster in the pod
+      # The port on the target pod
+      targetPort: 80
+      protocol: TCP

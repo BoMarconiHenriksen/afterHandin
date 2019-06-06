@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      # client-cluster-ip-service.yaml will use the label as a reference to the pod
+      labels:
+        component: web
+    # The containers that runs inside the pod
+    spec:
+      containers:
+        - name:  client
+          image: bomarconi/quasar-client
+          ports:
+          # The port is mapped up to the client image
+          - containerPort: 8080

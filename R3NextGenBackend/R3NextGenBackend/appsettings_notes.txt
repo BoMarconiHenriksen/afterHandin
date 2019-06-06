@@ -1,0 +1,5 @@
+// Connection string for local db
+"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=c3NextGenV5;Trusted_Connection=True;"
+
+// K8s
+"DefaultConnection": "Server=mssql-cluster-ip-service, 1433;Database=c3NextGen;User Id=sa;Password=PassWord123;"

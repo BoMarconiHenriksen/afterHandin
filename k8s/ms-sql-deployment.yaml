@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: mssql
+  template:
+    metadata:
+      labels:
+        component: mssql
+    spec:
+      # Sets up the request on the pod to reach out to kubernetes saying I need some types of long term storage
+      volumes:
+        - name: mssql-storage
+          persistentVolumeClaim:
+            # From the database-persistent-volume-claim.yaml
+            claimName: database-formbuilder-persistent-volume-claim
+      containers:
+        - name: mssql
+          image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu # microsoft/mssql-server-linux:2017-latest
+          ports:
+            - containerPort: 1433
+          # Here is how I want to use it(pvc) inside my container
+          volumeMounts:
+              # Volumes has to be identical with volumeMounts
+            - name: mssql-storage
+              # Where inside the container should the storage be made availble
+              # This will actually be stored inside the volumes. Has to be default storage path for the db
+              mountPath: /var/opt/mssql
+          env:
+            - name: MSSQL_PID
+              value: Developer
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: PassWord123

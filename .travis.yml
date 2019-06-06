@@ -1,0 +1,42 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    # Get the current commit sha and store it as an environment variable called sha
+    - SHA=$(git rev-parse HEAD)
+    # Configure google cli so it's does not show prompts
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+  # Google cloud credientials. Encrypted with teavis cli to a file in root directory
+  - openssl aes-256-cbc -K $encrypted_de9c57dbf16e_key -iv $encrypted_de9c57dbf16e_iv -in service-account.json.enc -out service-account.json -d
+  # Download and install Google Cloud SDK. The last part is going to install it.
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  # Look at the default install directory and modify the shell via the source command
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  # Update kubectl
+  - gcloud components update kubectl
+  # Authorize gcloud to get access to our account
+  - gcloud auth activate-service-account --key-file service-account.json
+  # The project id from google console
+  - gcloud config set project hovedopgave-242009
+  # Specify your data location
+  - gcloud config set compute/zone europe-north1-a
+  # Tell what cluster we are going to work with(the name we gave it when we created the cluster)
+  - gcloud container clusters get-credentials hovedopgave
+  # Login to dogger the password is emmited over stdin into this command
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # Build the test image. Is nestet in the client folder
+  #- docker build -t bomarconi/quasar-test -f ./client/Dockerfile.dev ./client
+  #
+# script:
+  # -- -- coverage means no watchmode
+  # - docker run bomarconi/quasar-test quasar test --unit jest # -- --coverage
+
+# Use generic language otherwise it will build in Ruby which is default
+language: generic
+deploy:
+  provider: script # Run script file to deploy
+  script: bash ./deploy.sh # The command to run the script
+  on:
+    branch: master

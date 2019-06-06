@@ -1,0 +1,21 @@
+# Develop stage
+# Skaffold can automatically sync files to a running container and skip a rebuild
+FROM node:alpine
+
+WORKDIR '/app'
+
+# COPY ./package*.json /app/
+COPY ./package*.json ./
+
+RUN npm install -g @quasar/cli
+RUN npm install
+
+FROM node:alpine
+WORKDIR '/app'
+
+COPY --from=0 /app/node_modules node_modules
+
+RUN npm install -g @quasar/cli
+EXPOSE 8080
+CMD ["quasar", "dev"]
+COPY . .

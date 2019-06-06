@@ -1,0 +1,55 @@
+apiVersion: skaffold/v1beta8
+kind: Config
+
+profiles:
+  - name: dev
+    build:
+      artifacts:
+      - image: bomarconi/quasar-client
+        context: ./client/
+        # Directory containing the artifact's sources
+        docker:
+          dockerfile: Dockerfile.dev
+        # For hot-reloading
+        sync:
+          'src/*': src/
+      - image: bomarconi/formbuilder-server
+        context: ./R3NextGenBackend/R3NextGenBackend/
+        docker:
+          dockerfile: Dockerfile.dev
+      local: {}
+    deploy:
+      kubectl:
+        manifests:
+        - k8s\client-cluster-ip-service.yaml
+        - k8s\client-deployment.yaml
+        - k8s\database-formbuilder-persistent-volume-claim.yaml
+        - k8s\formbuilder-server-cluster-ip-service.yaml
+        - k8s\formbuilder-server-deployment.yaml
+        - k8s\ingress-service.yaml
+
+  - name: prod
+    build:
+      artifacts:
+      - image: bomarconi/quasar-client
+        context: ./client/
+        # Directory containing the artifact's sources
+        docker:
+          dockerfile: Dockerfile
+        # For hot-reloading
+        sync:
+          'src/*': src/
+      - image: bomarconi/formbuilder-server
+        context: ./R3NextGenBackend/R3NextGenBackend/
+        docker:
+          dockerfile: Dockerfile
+      local: {} # This needs to change when going to production
+    deploy:
+      kubectl:
+        manifests:
+        - k8s\client-cluster-ip-service.yaml
+        - k8s\client-deployment.yaml
+        - k8s\database-formbuilder-persistent-volume-claim.yaml
+        - k8s\formbuilder-server-cluster-ip-service.yaml
+        - k8s\formbuilder-server-deployment.yaml
+        - k8s\ingress-service.yaml

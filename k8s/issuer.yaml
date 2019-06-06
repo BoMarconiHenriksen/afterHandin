@@ -1,0 +1,15 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  # The purpose of the issuer is to reach out to the production version of lets encrypt
+  name: letsencrypt-prod
+spec:
+  acme:
+    # The server to reach out to lets encrypt API
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: 'bomarconi@gmail.com'
+    # A part of the verification process
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    # Means we are going to use the process of getting a certificate
+    http01: {}

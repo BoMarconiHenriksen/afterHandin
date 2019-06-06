@@ -1,0 +1,24 @@
+#version: '3.7'
+#services:
+#  formbuilderapi:
+#    build:
+#      dockerfile: Dockerfile.dev
+#      context: ./R3NextGenBackend
+#    ports:
+#      - '5001:80'
+#    depends_on:
+#      - dbformbuilder
+#  dbformbuilder:
+#    image: microsoft/mssql-server-windows-express:latest
+#    environment:
+#      ACCEPT_EULA: 'Y'
+      # MSSQL_PID: 'Developer'
+      # SA_PASSWORD: "Your_password123"
+#    ports:
+#      - 1433:1433
+#    volumes:
+#      - C:\Users\bh
+
+# Sæt miljø variabler op på serveren så du kan forbinde til db.
+# User=sa;Password=Your_password123;
+# https://code-maze.com/mysql-aspnetcore-docker-compose/
