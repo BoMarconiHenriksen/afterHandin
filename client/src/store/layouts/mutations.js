@@ -68,8 +68,9 @@ export const storeDeleteRow = (state, id) => {
 export const removeItem = (state, payload) => {
   // Be sure static is false when deleting.
   for (let x in state.gridLayout) {
+    console.log(state.gridLayout[x])
     if (state.gridLayout[x].i === payload.key) {
-      state.gridLayout.splice(state.gridLayout[x], 1)
+      state.gridLayout.splice(state.gridLayout.indexOf(state.gridLayout[x]), 1)
     }
   }
 }

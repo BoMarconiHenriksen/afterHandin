@@ -60,7 +60,6 @@ export const removeItem = ({ commit }, payload) => {
 
 // Save header and text from input Field.
 export const saveInputField = ({ commit }, payload) => {
-  console.log(payload)
   commit('saveNameOfInputField', payload)
 }
 

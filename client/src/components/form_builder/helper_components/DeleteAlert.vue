@@ -46,10 +46,10 @@ export default {
     ...mapActions([
       'removeItem'
     ]),
-    removeItemAndClosePopup ({ key: index }) {
+    removeItemAndClosePopup (index) {
       this.confirm = false
-      this.removeItem({ key: index }
-      )
+      console.log(index)
+      this.removeItem(index)
     },
     cancelPopup () {
       this.confirm = false
