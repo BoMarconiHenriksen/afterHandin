@@ -117,7 +117,7 @@ export default {
       templateToAdd.formFields[0].width = layoutFromFormBuilder[0].w
       templateToAdd.formFields[0].component.componentName = layoutFromFormBuilder[0].component
 
-      // Pass g parameter in regex to tell replace function to replace globally in string
+      // Pass g parameter in regex to tell replace function to replace globally in string or else it only change first
       let options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }
       let today = new Date().toLocaleString('eu', options).replace(/\//g, '-').replace(' ', 'T')
 
