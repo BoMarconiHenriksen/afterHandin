@@ -89,17 +89,17 @@ export async function fetchFormsFromDb ({ commit }) {
 export async function updateRow ({ commit }, row) {
   // We have to map the data from the table to match the data in the database
 
-  var lastFetch = getStateOfTableData()
-  console.log('POST1')
-  console.log(row)
-  console.log(row.id)
-  console.log(lastFetch)
+  var lastFetch = getStateOfGridlayout()
+
   // Find the row from state to update
   const rowToUpdate = lastFetch.filter((tableRow) => tableRow.id === row.id)
-  console.log(rowToUpdate)
+
+  let today = new Date().toLocaleString()
   rowToUpdate[0].name = row.name
   rowToUpdate[0].id = row.id
   rowToUpdate[0].formFields[0].headline = row.headline
+  rowToUpdate[0].completedForms[0].completedDate = today
+  row.completedDate = today
 
   try {
     await axios.put(`${baseUrl}/Forms/${row.id}`, rowToUpdate[0])
@@ -112,12 +112,8 @@ export async function updateRow ({ commit }, row) {
 // Post new item
 export async function postTemplate ({ commit }, template) {
   try {
-    // console.log('POST ' + template)
     const response = await axios.post(`${baseUrl}/Forms/`, { id: template.id, name: template.name, formFields: template.formFields, completedForms: template.completedForms })
-    // console.log(response)
-    const idFromDb = response.data.id
-    template.id = idFromDb
-    // console.log('up ' + idFromDb)
+
     commit('updateTableAfterPost', response.data)
   } catch (err) {
     console.log(err)
@@ -140,8 +136,8 @@ function generateRandomNumber () {
   return generatedNumber
 }
 
-// Helper method that get the state of the initial fetch
-function getStateOfTableData () {
+// Helper method that get the state of the last gridlayout last fetch
+function getStateOfGridlayout () {
   let fetchedGridlayouts = state.fetchedGridlayouts
   return fetchedGridlayouts
 }
