@@ -94,11 +94,14 @@ export async function updateRow ({ commit }, row) {
   // Find the row from state to update
   const rowToUpdate = lastFetch.filter((tableRow) => tableRow.id === row.id)
 
-  let today = new Date().toLocaleString()
+  // Pass g parameter in regex to tell replace function to replace globally in string
+  let options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }
+  let today = new Date().toLocaleString('eu', options).replace(/\//g, '-').replace(' ', 'T')
   rowToUpdate[0].name = row.name
   rowToUpdate[0].id = row.id
   rowToUpdate[0].formFields[0].headline = row.headline
   rowToUpdate[0].completedForms[0].completedDate = today
+  console.log(rowToUpdate[0])
   row.completedDate = today
 
   try {

@@ -117,7 +117,10 @@ export default {
       templateToAdd.formFields[0].width = layoutFromFormBuilder[0].w
       templateToAdd.formFields[0].component.componentName = layoutFromFormBuilder[0].component
 
-      let today = new Date().toLocaleString()
+      // Pass g parameter in regex to tell replace function to replace globally in string
+      let options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }
+      let today = new Date().toLocaleString('eu', options).replace(/\//g, '-').replace(' ', 'T')
+
       templateToAdd.completedForms[0].completedDate = today
 
       this.postTemplate(templateToAdd)
