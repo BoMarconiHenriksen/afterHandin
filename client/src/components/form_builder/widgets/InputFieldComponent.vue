@@ -32,7 +32,7 @@
 import { mapActions } from 'vuex'
 import LockComponent from '../helper_components/LockComponent.vue'
 export default {
-  props: ['item'],
+  props: ['item', 'itemIndex'],
   components: {
     appLockComponent: LockComponent
   },

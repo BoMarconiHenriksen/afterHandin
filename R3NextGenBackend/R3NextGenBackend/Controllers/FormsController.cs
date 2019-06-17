@@ -65,6 +65,12 @@ namespace R3NextGenBackend.Controllers
                 _context.Entry(f).State = EntityState.Modified;
             }
 
+            // Edit date in CompletedForms
+            foreach (var f in form.CompletedForms)
+            {
+                _context.Entry(f).State = EntityState.Modified;
+            }
+
             try
             {
                 await _context.SaveChangesAsync();

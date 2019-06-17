@@ -10,7 +10,6 @@
       </div>
       <!-- Create the grid layout -->
       <grid-layout
-        :key="rerenderKey"
         :layout="getLayoutData"
         :col-num="12"
         :row-height="40"
@@ -48,7 +47,23 @@
       <br>
       <q-input outlined v-model="templateName" label="Skabelon Navn" style="width: 150px" />
       <br>
-      <q-btn class="float-left" color="white" text-color="black" label="Gem Skabelonen" @click="addTemplate" />
+      <!-- Save button -->
+      <q-btn class="float-left" color="white" text-color="black" label="Gem Skabelonen" @click="confirm = true" />
+
+      <!-- Confirm popup -->
+      <q-dialog v-model="confirm" persistent>
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="save" color="primary" text-color="white" />
+            <span class="q-ml-sm">Er du sikker på, du vil gemme din nuværende skabelon?</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Fortryd" color="primary" @click="cancelPopup" />
+            <q-btn flat label="Gem" color="primary" @click="addTemplate" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
 
       <appGetTemplateComponent />
 
@@ -73,7 +88,7 @@ export default {
   data () {
     return {
       templateName: '',
-      rerenderKey: 0
+      confirm: false
     }
   },
   methods: {
@@ -81,13 +96,16 @@ export default {
       'addInputFieldToGrid',
       'editLabel',
       'fetchFormsFromDb',
-      'postTemplate'
+      'postTemplate',
+      'clearLayout'
     ]),
     addTemplate () {
       let templateName = this.templateName
       let layoutFromFormBuilder = this.getLayoutData
 
       let templateToAdd = { name: '', completedForms: [{ completedDate: null, formFieldValues: [{ value: '' }] }], formFields: [{ id: 0, column: null, component: { id: 0, componentName: '', formFieldId: 0 }, headline: '', height: null, row: null, static: null, width: null, formFieldValues: [] }] }
+
+      this.confirm = false
 
       // TODO: See if Grid Layout has mapping between objects
       templateToAdd.name = templateName
@@ -99,14 +117,21 @@ export default {
       templateToAdd.formFields[0].width = layoutFromFormBuilder[0].w
       templateToAdd.formFields[0].component.componentName = layoutFromFormBuilder[0].component
 
-      let today = new Date().toLocaleString()
+      // Pass g parameter in regex to tell replace function to replace globally in string or else it only change first
+      let options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }
+      let today = new Date().toLocaleString('eu', options).replace(/\//g, '-').replace(' ', 'T')
+
       templateToAdd.completedForms[0].completedDate = today
 
       this.postTemplate(templateToAdd)
-      // Clear fields after click
+
+      // Clear the gridlayout after save
+      this.clearLayout()
+      // Clear input field after click
       this.templateName = ''
-      // Reload the component
-      this.rerenderKey += 1
+    },
+    cancelPopup () {
+      this.confirm = false
     }
   },
   computed: {

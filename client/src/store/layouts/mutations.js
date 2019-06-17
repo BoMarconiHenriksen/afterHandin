@@ -8,6 +8,11 @@ export const setNewGridItem = (state, inputFieldLayout) => {
   state.gridLayout.push(inputFieldLayout)
 }
 
+// Clear the gridlayout after save.
+export const clarLayoutInStore = (state, payload) => {
+  state.gridLayout.length = 0
+}
+
 // List of templates from backend.
 export const getListOfGridItems = (state, payload) => {
   let tableData = [ ]
@@ -28,14 +33,18 @@ export const getListOfGridItems = (state, payload) => {
 
 // Update table after a post
 export const updateTableAfterPost = (state, template) => {
-  let newEntity = [ ]
+  let newEntity = { }
 
   newEntity.id = template.id
   newEntity.name = template.name
   newEntity.completedDate = template.completedForms[0].completedDate
   newEntity.headline = template.formFields[0].headline
 
+  // Push the new entity to tableData with the right structure
   state.tableData.push(newEntity)
+
+  // Push the the entity to fetchGridlayout
+  state.fetchedGridlayouts.push(template)
 }
 
 // Update row in state after put in action
@@ -47,7 +56,12 @@ export const storeUpdateRow = (state, payload) => {
   if (tableData.length === 1) {
     tableData[0].name = payload.name
     tableData[0].headline = payload.headline
-    state.tableData[tableData[0].id] = tableData[0]
+    tableData[0].completedDate = payload.completedDate
+
+    // Find the index of the element that has to cahnge
+    let index = state.tableData.indexOf(tableData[0])
+
+    state.tableData[index] = tableData[0]
   }
 }
 
@@ -64,7 +78,7 @@ export const removeItem = (state, payload) => {
   // Be sure static is false when deleting.
   for (let x in state.gridLayout) {
     if (state.gridLayout[x].i === payload.key) {
-      state.gridLayout.splice(state.gridLayout[x], 1)
+      state.gridLayout.splice(state.gridLayout.indexOf(state.gridLayout[x]), 1)
     }
   }
 }
