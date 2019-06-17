@@ -23,8 +23,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-        <q-btn flat label="Fortryd" color="primary" v-close-dialog ></q-btn>
-        <q-btn @click="removeItemAndClosePopup({ key: item.i })" flat label="Slet" color="primary" v-close-dialog="confirm"></q-btn>
+        <q-btn flat label="Fortryd" color="primary" @click="cancelPopup" ></q-btn>
+        <q-btn @click="removeItemAndClosePopup({ key: item.i })" flat label="Slet" color="primary" ></q-btn>
         </q-card-actions>
 
       </q-card>
@@ -46,10 +46,13 @@ export default {
     ...mapActions([
       'removeItem'
     ]),
-    removeItemAndClosePopup ({ key: index }) {
+    removeItemAndClosePopup (index) {
       this.confirm = false
-      this.removeItem({ key: index }
-      )
+      console.log(index)
+      this.removeItem(index)
+    },
+    cancelPopup () {
+      this.confirm = false
     }
   }
 }
