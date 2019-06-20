@@ -37,13 +37,14 @@ spec:
               value: "Y"
             - name: MSSQL_SA_PASSWORD
               value: PassWord123
-          resources:
-            # Ensures that the sum of the node capacity is less than the capacity of the node
-            requests:
-              memory: "64Mi"
-              cpu: "250M"
-            limits:
+          #resources:
+            #limits:
               # If the container reach its memory limits it will be terminated and then restarted
-              memory: "128Mi"
+              #memory: "128Mi"
               # Might or might not be allowed to exceed its cpu limits
-              cpu: "500m" # 0.5 cpu
+              #cpu: "500m" # 0.5 cpu
+            # Ensures that the sum of the node capacity is less than the capacity of the node
+            #requests:
+              #memory: "64Mi"
+              #cpu: "250m"
+            
