@@ -6,21 +6,10 @@ metadata:
   annotations:
     # Tells Kubernetes we want to create a nginx controller based on the nginx project
     kubernetes.io/ingress.class: nginx
-    # Tell nginx that it get a certificate from this issuer
-    certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
-    # force users to always use https trafic
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-# Configure how our copy of nginx behaves
+    # Configure how our copy of nginx behaves
 spec:
-  # The secure hosts users can connect to
-  tls:
-    - hosts:
-        - ngc3.rm-group.dk
-      secretName: ngc3-dk # the name of the secret from certificate.yaml
   rules:
-    # When someone comes to our domain this is the rules we want to apply. This applies only for ngc3.rm-group.dk so we have to repeat the rules
-    - host: ngc3.rm-group.dk
-      http:
+    - http:
         paths:
           - path: /
             backend:
