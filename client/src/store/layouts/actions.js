@@ -2,9 +2,9 @@ import axios from 'axios'
 import state from '../layouts/state'
 
 // Running the cluster with minikube or GKE
-// const baseUrl = '/api'
+const baseUrl = '/api'
 // local development. Run npm install, quasar dev and run .Net Core
-const baseUrl = 'https://localhost:5001/api'
+// const baseUrl = 'https://localhost:5001/api'
 
 import initialLayoutData from '../../assets/savedLayouts/demo.json'
 
